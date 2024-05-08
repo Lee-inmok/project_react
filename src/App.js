@@ -2,7 +2,7 @@ import './App.css';
 
 function App() {
   return (
-    <div>mokmokmok</div>
+    <div>mokmokmok new_react</div>
   );
 }
 

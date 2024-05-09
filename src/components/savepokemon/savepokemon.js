@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container } from "./styled";
 
-export const SavedPokemonList = ({ savedPokemon, onDeletePokemon, onChangePokemon }) => {
+export const SavedPokemonList = ({ savedPokemon, onDeletePokemon, onChangePokemon, addmonsterbook }) => {
   const [editingIndex, setEditingIndex] = useState(-1); // 초기에는 수정 중인 인덱스가 없음
 
   const handleEdit = (index) => {
@@ -16,7 +16,6 @@ export const SavedPokemonList = ({ savedPokemon, onDeletePokemon, onChangePokemo
   const handleFinishEdit = () => {
     setEditingIndex(-1); // 수정 완료 시 인덱스 초기화
   };
-
   return (
     <Container>
       {savedPokemon.map((pokemon, index) => (
@@ -29,9 +28,10 @@ export const SavedPokemonList = ({ savedPokemon, onDeletePokemon, onChangePokemo
             </div>
           ) : (
             <div>
-              <p>{index}번 {pokemon.name}</p>
+              <p>{index+1}번 {pokemon.name}</p>
               <button onClick={() => onDeletePokemon(index)}>삭제</button>
               <button onClick={() => handleEdit(index)}>수정</button>
+              <button onClick={() => addmonsterbook(index)}>몬스터북 추가</button>
             </div>
           )}
         </div>

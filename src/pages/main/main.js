@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Container } from "./styled";
 import axios from "axios";
 import { SavedPokemonList } from "../../components/savepokemon/savepokemon";
+import { useDispatch, useSelector } from "react-redux";
+import { setSavedPokemon, setSvaedBook } from "../../storage/actions";
 
 export const Main = () => {
   const handleInputChange = (event) => {
@@ -9,42 +11,24 @@ export const Main = () => {
     setNumber(value);
     localStorage.setItem("todoItem", value);
   };
-  const [number, setNumber] = useState(0);
-  const [pekemonimg, setPokemonImg] = useState("");
-  const [pokemonName, setPokemonName] = useState("");
-  const [savedPokemon, setSavedPokemon] = useState([]);
+
+  const [number, setNumber] = useState("");
+  const [pokemonImg] = useState("");
+  const [pokemonName] = useState("");
+  const dispatch = useDispatch();
+  const savedPokemon = useSelector((state) => state.savedPokemon) || []; // savedPokemon이 없을 때 빈 배열을 반환
 
   useEffect(() => {
-    getPokemonImg();
-  }, [pokemonName]);
+    const savedPokemonFromStorage = JSON.parse(localStorage.getItem("savedPokemon")) || [];
+    dispatch(setSavedPokemon(savedPokemonFromStorage));
+  }, [dispatch]);
 
   const handleDeletePokemon = (index) => {
     const updatedPokemonList = savedPokemon.filter((pokemon, i) => i !== index);
-    setSavedPokemon(updatedPokemonList);
+    dispatch(setSavedPokemon(updatedPokemonList));
     localStorage.setItem("savedPokemon", JSON.stringify(updatedPokemonList));
   };
 
-  const getPokemonImg = async () => {
-    try {
-      const response = await axios.get(
-        `https://pokeapi.co/api/v2/pokemon-form/${number}`
-      );
-      setPokemonImg(response.data.sprites.front_default);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const apirequest = async () => {
-    try {
-      const response = await axios.get(
-        `https://pokeapi.co/api/v2/pokemon/${number}`
-      );
-      setPokemonName(response.data.forms[0].name);
-    } catch (e) {
-      console.log(e);
-    }
-  };
   const handleSavePokemon = async () => {
     try {
       const response = await axios.get(
@@ -55,30 +39,37 @@ export const Main = () => {
         img: response.data.sprites.front_default,
       };
       const updatedPokemonList = [...savedPokemon, newPokemon];
-      setSavedPokemon(updatedPokemonList);
+      dispatch(setSavedPokemon(updatedPokemonList));
       localStorage.setItem("savedPokemon", JSON.stringify(updatedPokemonList));
-      console.log("버튼클릭");
     } catch (e) {
       console.log(e);
     }
   };
 
-  const handleEditPokemon = (index, newName) => {
-    const updatedPokemonList = savedPokemon.map((pokemon, i) => {
+  const onChangePokemon = (index, newName) => {
+    const updatedPokemon = savedPokemon.map((pokemon, i) => {
       if (i === index) {
         return { ...pokemon, name: newName };
       }
       return pokemon;
     });
-    setSavedPokemon(updatedPokemonList);
-    localStorage.setItem("savedPokemon", JSON.stringify(updatedPokemonList));
+    dispatch(setSavedPokemon(updatedPokemon));
+    localStorage.setItem("savedPokemon", JSON.stringify(updatedPokemon));
   };
 
-  const onChangePokemon = (index, newName) => {
-    const updatedPokemon = [...savedPokemon];
-    updatedPokemon[index].name = newName;
-    setSavedPokemon(updatedPokemon);
-  }
+  const monsterbookAdd = (index) => {
+    const addmonsterbook = savedPokemon.map((pokemon, i) => {
+      if ( i === index ) {
+        return {...pokemon};
+      }
+      return pokemon
+    });
+    dispatch(setSvaedBook(addmonsterbook));
+    localStorage.setItem("savedPokemonbook", JSON.stringify(addmonsterbook));
+    console.log("몬스터북 추가 성공")
+
+  };
+
 
   return (
     <>
@@ -88,17 +79,16 @@ export const Main = () => {
           value={number}
           onChange={handleInputChange}
           placeholder="몬스터번호"
-        ></input>
+        />
         <div onClick={handleSavePokemon}>포켓몬 저장하기</div>
-        <div onClick={apirequest}>포켓몬 정보보기</div>
-        <img src={pekemonimg} alt="" />
+        <img src={pokemonImg} alt="" />
         <p>{pokemonName}</p>
 
         <SavedPokemonList
           savedPokemon={savedPokemon}
           onDeletePokemon={handleDeletePokemon}
-          onEditPokemon={handleEditPokemon}
           onChangePokemon={onChangePokemon}
+          addmonsterbook={monsterbookAdd}
         />
       </Container>
     </>

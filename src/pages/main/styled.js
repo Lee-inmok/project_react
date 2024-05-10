@@ -8,6 +8,7 @@ export const Container = styled.div`
     height:300px;
 
     fonr-size:30px;
+    
 `
 
 export const StyleButton = styled.div`

@@ -1,29 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Container } from "./styled";
+import { useSelector } from "react-redux";
+import { Loadbook } from "../../components/loadbook/loadbook";
 
 export const Signin = () => {
-  const [pokemonName, setPokemonName] = useState("");
-  const [pokemonImg, setPokemonImg] = useState("");
-
-  useEffect(() => {
-    const pokemonImg = localStorage.getItem("pokemonImg")
-    const pokemon = localStorage.getItem("pokemonName");
-    if (pokemon) {
-      setPokemonName(pokemon);
-    } else {
-      console.log("error");
-    }
-    if (pokemonImg) {
-        setPokemonImg(pokemonImg);
-      } else {
-        console.log("error");
-      }
-  }, []);
-
+  const savedPokemonbook = useSelector((state) => state.savedPokemonbook) || [];
   return (
     <Container>
-      <div>{pokemonName}</div>
-      <div>{pokemonImg}</div>
+      <Loadbook loadbook={savedPokemonbook} />
     </Container>
   );
 };

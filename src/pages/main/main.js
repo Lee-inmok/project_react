@@ -21,7 +21,6 @@ export const Main = () => {
   const handleInputChange = (event) => {
     const value = event.target.value;
     setNumber(value);
-    localStorage.setItem("todoItem", value);
   };
 
   const handleSavePokemon = async () => {

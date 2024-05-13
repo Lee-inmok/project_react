@@ -85,6 +85,8 @@ export const Main = () => {
     localStorage.setItem("savedPokemon", JSON.stringify(updatedPokemon));
   };
 
+  
+
   return (
     <>
       <StyleButton>

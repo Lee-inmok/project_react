@@ -12,7 +12,7 @@ export const Header = () => {
       ></BackgroundImage>
       <SpanButton onClick={() => navigate("/main")}>포켓몬 뽑기</SpanButton>
       <SpanButton onClick={() => navigate("/mypokemon")}>내 포켓몬</SpanButton>
-      <SpanButton onClick={() => navigate("/temp")}>백과사전</SpanButton>
+      <SpanButton onClick={() => navigate("/pokemonbook")}>백과사전</SpanButton>
     </Container>
   );
 };

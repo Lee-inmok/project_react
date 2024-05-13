@@ -3,12 +3,14 @@ import { Container } from "./styled";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setSavedPokemonBook } from "../../storage/actions";
+import { Loadpekomonbook } from "../../components/loadpokemonbook/loadpokemonbook";
 
 export const Pokemonbook = () => {
-    const dispatch = useDispatch();
-    const [savedPokemonFromStorage, setSavedPokemonFromStorage] = useState([]);
-  
-    useEffect(() => {
+  const dispatch = useDispatch();
+  const [savedPokemonFromStorage, setSavedPokemonFromStorage] = useState([]);
+
+  useEffect(() => {
+    if (savedPokemonFromStorage.length === 0) {
       const fetchData = async () => {
         try {
           const response = await axios.get(
@@ -37,17 +39,14 @@ export const Pokemonbook = () => {
           console.log(error);
         }
       };
-  
+
       fetchData();
-    }, [dispatch]);
-  
-    // savedPokemonFromStorage 값이 로컬 스토리지에서 가져와서 비어 있으면 useEffect가 실행되지 않음
-    if (savedPokemonFromStorage.length > 0) {
-      dispatch(setSavedPokemonBook(savedPokemonFromStorage));
-      console.log(savedPokemonFromStorage)
     }
+  }, [dispatch, savedPokemonFromStorage]);
+
+  console.log()
 
   return <Container>
-    
+    <Loadpekomonbook loadpekomonbook={savedPokemonFromStorage}/>
   </Container>;
 };

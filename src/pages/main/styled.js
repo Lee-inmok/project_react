@@ -1,21 +1,19 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-    dhsplay:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    height:300px;
-
-    fonr-size:30px;
-`
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100px
+`;
 
 export const StyleButton = styled.div`
-background-color : #c9c9c9;
-padding: 10px 25px;
-cursor:pointer;
+  background-color: #fCDE70;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
 
-&:hover {
-    background-color : blue
-}`
-
+  &:hover {
+  }
+`;

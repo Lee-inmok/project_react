@@ -1,29 +1,36 @@
-import './App.css';
 // pages
-import { Main } from './pages/main/main';
-import { Signin } from './pages/signin/signin';
-import { Temp } from './pages/temp/temp';
+import { Main } from "./pages/main/main";
+import { Mypokemon } from "./pages/mypokemon/mypokemon";
+import { Pokemonbook } from "./pages/pokemonbook/pokemonbook";
 // component
-import { Header } from './components/header/header';
+import { Header } from "./components/header/header";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate
-} from 'react-router-dom';
+  Navigate,
+} from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./storage/store";
+import { Backstyle, Content } from "./styled";
 
 function App() {
-  
   return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route exact path='/' element={<Navigate to="/main" />} />
-        <Route exact path='/main' element={<Main />} />
-        <Route exact path='/sign-in' element={<Signin />} />
-        <Route exact path='/temp' element={<Temp/>} />
-      </Routes>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <Backstyle>
+          <Content>
+            <Header />
+            <Routes>
+              <Route exact path="/" element={<Navigate to="/main" />} />
+              <Route exact path="/main" element={<Main />} />
+              <Route exact path="/mypokemon" element={<Mypokemon />} />
+              <Route exact path="/pokemonbook" element={<Pokemonbook />} />
+            </Routes>
+          </Content>
+        </Backstyle>
+      </Router>
+    </Provider>
   );
 }
 

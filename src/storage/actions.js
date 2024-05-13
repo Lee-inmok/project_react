@@ -15,3 +15,12 @@ export function setSavedBook(savedPokemonbook) {
     payload: savedPokemonbook
   };
 }
+
+export const SET_SAVED_POKEMON_BOOK = "SET_SAVED_POKEMON_BOOK";
+
+export function setSavedPokemonBook(savedPokemonbooks) {
+  return {
+    type: SET_SAVED_POKEMON_BOOK,
+    payload: savedPokemonbooks
+  };
+}

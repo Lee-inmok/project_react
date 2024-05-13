@@ -1,4 +1,4 @@
-import { SET_SAVED_BOOK, SET_SAVED_POKEMON } from "./actions";
+import { SET_SAVED_BOOK, SET_SAVED_POKEMON, SET_SAVED_POKEMON_BOOK } from "./actions";
 
 const initialState = {
   savedPokemon: [],
@@ -11,6 +11,8 @@ function rootReducer(state = initialState, action) {
       return { ...state, savedPokemon: action.payload };
     case SET_SAVED_BOOK:
       return { ...state, savedPokemonbook: action.payload };
+    case SET_SAVED_POKEMON_BOOK:
+      return { ...state, savedPokemonbooks: action.payload };
     default:
       return state;
   }

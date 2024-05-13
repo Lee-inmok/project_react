@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, StyleButton } from "./styled";
+import { Container, StyleButton} from "./styled";
 import axios from "axios";
 import { SavedPokemonList } from "../../components/savepokemon/savepokemon";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,9 +16,14 @@ export const Main = () => {
   useEffect(() => {
     const randomValue = Math.floor(Math.random() * 1024) + 1;
     setNumber(randomValue);
+    
     const savedPokemonFromStorage =
       JSON.parse(localStorage.getItem("savedPokemon")) || [];
     dispatch(setSavedPokemon(savedPokemonFromStorage));
+
+    const savedPokemonBookStorage =
+      JSON.parse(localStorage.getItem("savedPokemonbook")) || [];
+    dispatch(setSavedBook(savedPokemonBookStorage));
   }, [dispatch]);
 
   const handleInputChange = (event) => {
@@ -32,6 +37,9 @@ export const Main = () => {
       const newPokemon = {
         name: savedPokemon[index].name,
         img: savedPokemon[index].img,
+        type: savedPokemon[index].type,
+        height: savedPokemon[index].height,
+        weight: savedPokemon[index].weight,
       };
 
       // 기존 몬스터 리스트에 새로운 몬스터 추가
@@ -57,6 +65,9 @@ export const Main = () => {
       const newPokemon = {
         name: response.data.forms[0].name,
         img: response.data.sprites.front_default,
+        type: response.data.types[0].type.name,
+        height: response.data.height,
+        weight: response.data.weight,
       };
       const updatedPokemonList = [...savedPokemon, newPokemon];
       dispatch(setSavedPokemon(updatedPokemonList));
@@ -85,32 +96,30 @@ export const Main = () => {
     localStorage.setItem("savedPokemon", JSON.stringify(updatedPokemon));
   };
 
-  
-
   return (
     <>
-      <StyleButton>
-        <input
-          type="text"
-          value={number}
-          onChange={handleInputChange}
-          placeholder="몬스터번호"
-        />
-      </StyleButton>
-      <StyleButton>
-        <div onClick={handleSavePokemon}>포켓몬 저장하기</div>
-      </StyleButton>
-      <Container>
-        <img src={pokemonImg} alt="" />
-        <p>{pokemonName}</p>
+        <StyleButton>
+          <input
+            type="text"
+            value={number}
+            onChange={handleInputChange}
+            placeholder="몬스터번호"
+          />
+        </StyleButton>
+        <StyleButton>
+          <div style={{  cursor: "pointer"}} onClick={handleSavePokemon}>포켓몬 저장하기</div>
+        </StyleButton>
+        <Container>
+          <img src={pokemonImg} alt="" />
+          <p>{pokemonName}</p>
 
-        <SavedPokemonList
-          savedPokemon={savedPokemon}
-          onDeletePokemon={handleDeletePokemon}
-          onChangePokemon={onChangePokemon}
-          addmonsterbook={monsterbookAdd}
-        />
-      </Container>
+          <SavedPokemonList
+            savedPokemon={savedPokemon}
+            onDeletePokemon={handleDeletePokemon}
+            onChangePokemon={onChangePokemon}
+            addmonsterbook={monsterbookAdd}
+          />
+        </Container>
     </>
   );
 };

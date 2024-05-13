@@ -32,6 +32,10 @@ export const SavedPokemonList = ({
             marginTop: "10px",
             border: "1px solid black",
             padding: "10px",
+            width: "200px", 
+            overflow: "hidden",
+            whiteSpace: "nowrap", 
+            textOverflow: "ellipsis",
           }}
         >
           <img src={pokemon.img} alt={pokemon.name} />

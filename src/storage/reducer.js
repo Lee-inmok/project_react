@@ -10,10 +10,7 @@ function rootReducer(state = initialState, action) {
     case SET_SAVED_POKEMON:
       return { ...state, savedPokemon: action.payload };
     case SET_SAVED_BOOK:
-      return {
-        ...state,
-        savedPokemonbook: [...state.savedPokemonbook, action.payload],
-      };
+      return { ...state, savedPokemonbook: action.payload };
     default:
       return state;
   }

@@ -1,16 +1,7 @@
-import React, { useEffect } from "react";
-import { useDispatch} from "react-redux";
-import { setSavedBook } from "../../storage/actions";
+import React from "react";
 
 
 export const Loadbook = ({ loadbook }) => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const savedPokemonFromStorage =
-      JSON.parse(localStorage.getItem("savedPokemonbook")) || [];
-    dispatch(setSavedBook(savedPokemonFromStorage));
-  }, [dispatch]);
 
   if (!loadbook || loadbook.length === 0) {
     return <p>저장된 포켓몬이 없습니다.</p>;

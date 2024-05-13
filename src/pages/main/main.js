@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "./styled";
+import { Container, StyleButton } from "./styled";
 import axios from "axios";
 import { SavedPokemonList } from "../../components/savepokemon/savepokemon";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,8 +11,11 @@ export const Main = () => {
   const [pokemonName] = useState("");
   const dispatch = useDispatch();
   const savedPokemon = useSelector((state) => state.savedPokemon) || [];
+  const savedPokemonbook = useSelector((state) => state.savedPokemonbook) || [];
 
   useEffect(() => {
+    const randomValue = Math.floor(Math.random() * 1024) + 1;
+    setNumber(randomValue);
     const savedPokemonFromStorage =
       JSON.parse(localStorage.getItem("savedPokemon")) || [];
     dispatch(setSavedPokemon(savedPokemonFromStorage));
@@ -23,7 +26,30 @@ export const Main = () => {
     setNumber(value);
   };
 
+  const monsterbookAdd = (index) => {
+    try {
+      // 새로운 포켓몬 객체 생성
+      const newPokemon = {
+        name: savedPokemon[index].name,
+        img: savedPokemon[index].img,
+      };
+
+      // 기존 몬스터 리스트에 새로운 몬스터 추가
+      const uploadPokemonbook = [...savedPokemonbook, newPokemon];
+      dispatch(setSavedBook(uploadPokemonbook));
+      localStorage.setItem(
+        "savedPokemonbook",
+        JSON.stringify(uploadPokemonbook)
+      );
+      console.log("추가된 몬스터:", uploadPokemonbook);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const handleSavePokemon = async () => {
+    const randomValue = Math.floor(Math.random() * 1024) + 1;
+    setNumber(randomValue);
     try {
       const response = await axios.get(
         `https://pokeapi.co/api/v2/pokemon/${number}`
@@ -35,6 +61,7 @@ export const Main = () => {
       const updatedPokemonList = [...savedPokemon, newPokemon];
       dispatch(setSavedPokemon(updatedPokemonList));
       localStorage.setItem("savedPokemon", JSON.stringify(updatedPokemonList));
+      console.log("추가된 몬스터:", updatedPokemonList);
     } catch (e) {
       console.log(e);
     }
@@ -44,7 +71,6 @@ export const Main = () => {
     const updatedPokemonList = savedPokemon.filter((p, i) => i !== index);
     dispatch(setSavedPokemon(updatedPokemonList));
 
-    
     localStorage.setItem("savedPokemon", JSON.stringify(updatedPokemonList));
   };
 
@@ -59,23 +85,20 @@ export const Main = () => {
     localStorage.setItem("savedPokemon", JSON.stringify(updatedPokemon));
   };
 
-  const monsterbookAdd = (index) => {
-    const newMonster = savedPokemon[index];
-    dispatch(setSavedBook(newMonster));
-    localStorage.setItem("savedPokemonbook", JSON.stringify(newMonster));
-    console.log("추가된 몬스터:", newMonster);
-  };
-
   return (
     <>
-      <Container>
+      <StyleButton>
         <input
           type="text"
           value={number}
           onChange={handleInputChange}
           placeholder="몬스터번호"
         />
+      </StyleButton>
+      <StyleButton>
         <div onClick={handleSavePokemon}>포켓몬 저장하기</div>
+      </StyleButton>
+      <Container>
         <img src={pokemonImg} alt="" />
         <p>{pokemonName}</p>
 

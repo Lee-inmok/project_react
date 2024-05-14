@@ -22,7 +22,7 @@ export const SpanButton = styled.div`
   cursor: pointer;
   border-radius: 20px;
   padding: 10px 25px;
-  width: 50px;
+  width: 100px;
   text-align: center;
   font-size: 10px;
   font-weight: bold;

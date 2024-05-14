@@ -2,6 +2,7 @@
 import { Main } from "./pages/main/main";
 import { Mypokemon } from "./pages/mypokemon/mypokemon";
 import { Pokemonbook } from "./pages/pokemonbook/pokemonbook";
+import { Worldcup } from "./pages/worldcup/worldcup";
 // component
 import { Header } from "./components/header/header";
 import {
@@ -26,6 +27,7 @@ function App() {
               <Route exact path="/main" element={<Main />} />
               <Route exact path="/mypokemon" element={<Mypokemon />} />
               <Route exact path="/pokemonbook" element={<Pokemonbook />} />
+              <Route exact path="/worldcup" element={<Worldcup />} />
             </Routes>
           </Content>
         </Backstyle>

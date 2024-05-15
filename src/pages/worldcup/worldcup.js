@@ -1,40 +1,57 @@
-// Worldcup 컴포넌트
-import React, { useEffect, useState } from "react";
-import { GameContainer, ImgBox, ImgContainer, Round, Game } from "./styled";
+import React, { useEffect, useState, useContext } from "react";
 import PokemonFetcher from "../../components/pekemonfetcher/pokemonfetcher";
+import { GameContainer, ImgBox, ImgContainer, Game, Round } from "./styled";
+import { RankingContent } from "../../App";
+import { useNavigate } from "react-router-dom";
 
 export const Worldcup = () => {
+  const {value, setValue} = useContext(RankingContent);
   const [newPokemonList, setNewPokemonList] = useState([]);
-  const [allnumber] = useState(32);
   const [win, setWin] = useState([]);
+  const [number] = useState(8);
   const [round, setRound] = useState(1);
-  const [game, setGame] = useState(0);
+  const [game, setGame] = useState(newPokemonList.length);
 
-  useEffect(() => {
-    // 초기 포켓몬 리스트를 가져오는 로직을 시뮬레이션합니다.
-    const fetchedPokemonList = PokemonFetcher();
-    setNewPokemonList(
-      fetchedPokemonList.map((c) => ({
-        key: c.key,
-        name: c.name,
-        src: c.src,
-        order: Math.random()
-      })).sort((l, r) => l.order - r.order)
-    );
-    setGame(fetchedPokemonList.length);
-  }, []);
+  const navigate = useNavigate();
 
-  const handleClick = (e) => {
+  const handleClick = (pokemon) => {
     setNewPokemonList((prev) => {
       const temp = prev.splice(0, 2);
-      return prev.filter((el) => el.key !== temp.key);
+      return prev.filter((el, i) => el.key === temp.key);
     });
+    setWin((prev) => [...prev, pokemon]);
     setRound((prev) => prev + 1);
-    setWin((prev) => [...prev, e]);
+  };
+
+  const rank = () => {
+    const currentValue = [...value];
+  
+    const updatePokemonList = (pokemon) => {
+      const existingPokemonIndex = currentValue.findIndex((e) => e.number === pokemon.number);
+      //findindex 값찾기
+      if (existingPokemonIndex !== -1) {
+        const updatedList = currentValue.map((e, i) => {
+          if (i === existingPokemonIndex) {
+            return { ...e, score: e.score + 1 };
+          }
+          return e;
+        });
+        return updatedList;
+      } else {
+        return [...currentValue, { ...pokemon, score: 1 }];
+      }
+    };
+  
+    const updatedList = updatePokemonList(newPokemonList[0]);
+    setValue(updatedList);
+    navigate("/ranking");
   };
 
   useEffect(() => {
-    if (game === 1) return;
+    if (newPokemonList.length === 1) {
+      rank();
+      return;
+    }
     if (newPokemonList.length === 0) {
       setRound(1);
       setWin([]);
@@ -46,31 +63,22 @@ export const Worldcup = () => {
   return (
     <>
       <PokemonFetcher
-        allnumber={allnumber}
+        allnumber={number}
         setNewPokemonList={setNewPokemonList}
-      />
-      {game === 1 ? (
-        <Game>Win!</Game>
-      ) : game === 2 ? (
-        <Game>결승</Game>
-      ) : (
-        <Game>{game}강</Game>
-      )}
+      ></PokemonFetcher>
       {game > 2 && (
         <Round>
-          {round} 라운드
+          {round}
+          {"Round"}
         </Round>
       )}
       <GameContainer>
-        {newPokemonList.map((e, i) => {
-          if (i > 1) return null;
-          return (
-            <ImgContainer key={e.key} onClick={() => handleClick(e)}>
-              <ImgBox src={e.src} alt={e.name} />
-              <div>{e.name}</div> {/* 텍스트를 위한 별도 태그 */}
-            </ImgContainer>
-          );
-        })}
+        {newPokemonList.slice(0, 2).map((e, i) => (
+          <ImgContainer key={i} onClick={() => handleClick(e)}>
+            <ImgBox src={e.img} />
+            {e.name}
+          </ImgContainer>
+        ))}
       </GameContainer>
     </>
   );

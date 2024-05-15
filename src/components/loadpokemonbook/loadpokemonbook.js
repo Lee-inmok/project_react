@@ -1,5 +1,3 @@
-import React from "react";
-
 import temp from "../../assets/pokeball.png";
 
 export const Loadpekomonbook = ({ loadpekomonbook, typename }) => {

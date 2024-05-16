@@ -20,13 +20,15 @@ import { Backstyle, Content } from "./styled";
 export const RankingContent = createContext([]);
 
 function App() {
-  const [value, setValue] = useState([]) 
-  const [rankingvalue, setRankingvalue] = useState([])
-  
+  const [value, setValue] = useState([]);
+  const [rankingvalue, setRankingvalue] = useState([]);
+
   return (
     <Provider store={store}>
-      <RankingContent.Provider value={{value, setValue}}
-      renkingval={{rankingvalue, setRankingvalue}}>
+      <RankingContent.Provider
+        value={{ value, setValue }}
+        renkingval={{ rankingvalue, setRankingvalue }}
+      >
         <Router>
           <Backstyle>
             <Content>
